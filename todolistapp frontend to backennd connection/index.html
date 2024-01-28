@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script>
+    function print(jasoneddata) {
+      conole.log(jsoneddata);
+    }
+    function callback(data) {
+      data.json().then(print);
+    }
+    function OnPress() {
+      // fetch("http://localhost:3003/todos", {
+      //   method: "GET",
+      // }).then(callback);
+      // alert("hi backend");
+
+      // fetch hamesa post req string me hi leta hai and
+      // pata nhi kyu  header me same as post man bye compulsort=y hota hai abi ke liye
+      fetch("http://localhost:3003/todos", {
+        method: "POST",
+        body: JSON.stringify({
+          title: "gym",
+          description: "go to gym 6-7",
+        }),
+        headers: {
+          "content-Type": "application/json",
+        },
+      }).then(callback);
+      alert("hi backend");
+    }
+  </script>
+  <body>
+    <div>
+      <h1>todo list</h1>
+    </div>
+    <div>
+      <p>title</p>
+      <input type="text" id="userInput" placeholder="Type here..." />
+      <br />
+      <p>description</p>
+      <input type="text" id="userInput" placeholder="Type here..." />
+      <br />
+      <br />
+      <button type="submit" onclick="OnPress()">enter</button>
+    </div>
+  </body>
+</html>

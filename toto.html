@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script>
+    function deleteDone(){
+      console.log("done delete");
+    }
+function deleteTodo(id){
+  console.log(id);
+  fetch("http://localhost:3003/todos/"+id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(deleteDone);
+}
+    function paste(data){
+  console.log(data);
+  var parentElement=document.getElementById("mainarea");
+       //parentElement.innerHTML=JSON.stringify(data);
+       for(var i=0;i<data.length;i++){
+       var childElement=document.createElement("div");
+       var gc1=document.createElement("span");
+       gc1.innerHTML=data[i].title;
+       var gc2=document.createElement("span");
+       gc2.innerHTML=data[i].description;
+       var gc3=document.createElement("button");
+       gc3.innerHTML="Delete";
+       gc3.setAttribute("onclick","deleteTodo("+ data[i].id+")")
+       gc3.style.margin = "5px"
+       childElement.append(gc1);
+       childElement.append(gc2);
+       childElement.append(gc3);
+       parentElement.appendChild(childElement);
+       }
+   }
+    function callback2(resp){
+      resp.json().then(paste);
+    }
+    function print(jasoneddata) {
+      console.log(jasoneddata);
+      var parentElement=document.getElementById("mainarea");
+       //parentElement.innerHTML=JSON.stringify(data);
+       
+       var childElement=document.createElement("div");
+       var gc1=document.createElement("span");
+       gc1.innerHTML=jasoneddata.title;
+       var gc2=document.createElement("span");
+       gc2.innerHTML=jasoneddata.description;
+       var gc3=document.createElement("button");
+       gc3.innerHTML="Delete";
+       
+       childElement.append(gc1);
+       childElement.append(gc2);
+       childElement.append(gc3);
+       parentElement.appendChild(childElement);
+    }
+    function callback(data) {
+      data.json().then(print);
+    }
+    function getData(){
+    fetch("http://localhost:3003/todos", {
+        method: "GET",
+      }).then(callback2);
+    }
+
+    getData();
+
+    function OnPress() {
+      // fetch hamesa post req string me hi leta hai and
+      // pata nhi kyu  header me same as post man bye compulsort=y hota hai abi ke liye
+      var title = document.getElementById("title").value;
+      var description = document.getElementById("description").value;
+
+      fetch("http://localhost:3003/todos", {
+        method: "POST",
+        body: JSON.stringify({
+          title: title,
+          description: description,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(callback);
+    }
+  </script>
+  <body>
+    <div class="title">
+      <h1 >todo list</h1>
+    </div>
+      <p>title</p>
+      <input type="text" id="title" placeholder="Type here..."/>
+      <br />
+      <p>description</p>
+      <input type="text" id="description" placeholder="Type here..." />
+      <br />
+      <br />
+      <button type="submit" onclick="OnPress()" margin:auto>enter</button>
+      <div id="mainarea"> 
+      </div>
+    </div>
+  </body>
+</html>
